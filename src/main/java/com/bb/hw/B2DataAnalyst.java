@@ -12,12 +12,9 @@ import org.apache.logging.log4j.Logger;
 import com.backblaze.b2.client.B2Sdk;
 import com.backblaze.b2.client.B2StorageClient;
 import com.backblaze.b2.client.B2StorageClientFactory;
-import com.backblaze.b2.client.contentHandlers.B2ContentMemoryWriter;
 import com.backblaze.b2.client.exceptions.B2Exception;
 import com.backblaze.b2.client.structures.B2Bucket;
 import com.backblaze.b2.client.structures.B2FileVersion;
-
-import com.bb.hw.FileObject;
 
 /** 
 * @author : ayu
@@ -26,7 +23,7 @@ import com.bb.hw.FileObject;
 */
 public class B2DataAnalyst {
 	
-	private static final Logger s_logger=LogManager.getLogger(B2DataAnalyst.class);
+    private static final Logger s_logger=LogManager.getLogger(B2DataAnalyst.class);
 
     private static final String USER_AGENT="HomeWork";
     
@@ -82,7 +79,7 @@ public class B2DataAnalyst {
      */     
     private static void process(B2StorageClient client, Queue<FileObject> queue) throws B2Exception {
     	s_logger.info("Start to process .... ");
-    	B2ContentMemoryWriter sink=B2ContentMemoryWriter.build();
+    	B2ContentMemoryWriterDelegator sink=new B2ContentMemoryWriterDelegator();
     	if (sink!=null) {
     	    List<B2Bucket> buckets=pullBuckets(client);
             for (B2Bucket bucket: buckets) {
@@ -91,14 +88,7 @@ public class B2DataAnalyst {
                     downloadFileContent(client, version, sink, queue);
                 }
             }
-    	} else {
-    		String err="B2ContentMemoryWriter sink is null";
-    		errWriter.println("--- Error: "+err);
-    		s_logger.error(err);
-    		
-    		//B2Exception code, status, retryAfterSecondsOrNull are unkown so far, just use ("", -1, -1) plus the customized error message
-    		throw new B2Exception("", -1, -1, err);
-    	}
+    	} 
     }
     
       
@@ -141,23 +131,17 @@ public class B2DataAnalyst {
      * @param client: the consumer of B2 storage server; version: a B2FileVersio object; queue: a priority queue
      * @throws B2Exception if there are any troubles.
      */
-    private static void downloadFileContent(B2StorageClient client, B2FileVersion version, B2ContentMemoryWriter sink, Queue<FileObject> queue) throws B2Exception {
+    public static void downloadFileContent(B2StorageClient client, B2FileVersion version, B2ContentMemoryWriterDelegator sink, Queue<FileObject> queue) throws B2Exception {
     	s_logger.info("Try to download a file");
         String fieldId=version.getFileId();
         if (fieldId!=null) {
             String fileName=version.getFileName();
             if (fileName!=null) {
             	s_logger.debug("File name: " +fileName);
-                client.downloadById(fieldId, sink);
-                String content=new String(sink.getBytes());
-                if (content!=null) {
-                    s_logger.debug("File content: [" + content + "]");
-                    queue.offer(new FileObject(fileName, content, 'a'));
-                } else {
-                	String err="content is null, fieldId: "+fieldId+", fileName: "+fileName;
-                	errWriter.println("--- Error: "+err);
-                	s_logger.error(err);
-                }
+                client.downloadById(fieldId, sink.getB2ContentMemoryWriter());
+                String content=new String(sink.getData());
+                s_logger.debug("File content: [" + content + "]");
+                queue.offer(new FileObject(fileName, content, 'a'));
             } else {
             	String err="fileName is null, fieldId: "+fieldId;
             	errWriter.println("--- Error: "+err);

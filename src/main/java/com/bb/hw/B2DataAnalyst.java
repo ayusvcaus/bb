@@ -137,7 +137,7 @@ public class B2DataAnalyst {
         if (fieldId!=null) {
             String fileName=version.getFileName();
             if (fileName!=null) {
-            	s_logger.debug("File name: " +fileName);
+            	s_logger.info("File name: " +fileName);
                 client.downloadById(fieldId, sink.getB2ContentMemoryWriter());
                 String content=new String(sink.getData());
                 s_logger.debug("File content: [" + content + "]");

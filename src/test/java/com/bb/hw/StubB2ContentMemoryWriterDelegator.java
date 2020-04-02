@@ -12,6 +12,10 @@ public class StubB2ContentMemoryWriterDelegator extends B2ContentMemoryWriterDel
 
     private byte[] data;
     
+    public StubB2ContentMemoryWriterDelegator() {
+    	super(false);
+    }
+    
     public void setData(String s) {
     	if (s!=null) {
     	    data=s.getBytes();

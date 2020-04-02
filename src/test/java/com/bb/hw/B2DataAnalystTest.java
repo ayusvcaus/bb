@@ -114,5 +114,5 @@ public class B2DataAnalystTest {
         	assertEquals(fo.getFileName(), fnames.get(i));
         	i++;
         }
-	}
+    }
 }

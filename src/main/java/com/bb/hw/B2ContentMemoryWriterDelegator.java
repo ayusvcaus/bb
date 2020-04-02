@@ -15,7 +15,7 @@ import com.backblaze.b2.client.contentHandlers.B2ContentMemoryWriter;
 
 public class B2ContentMemoryWriterDelegator {
 	
-	private B2ContentMemoryWriter writer;
+    private B2ContentMemoryWriter writer;
 
     public B2ContentMemoryWriterDelegator(boolean use){
     	if (use) {

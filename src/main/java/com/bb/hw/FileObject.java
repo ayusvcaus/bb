@@ -11,11 +11,11 @@ import org.apache.logging.log4j.Logger;
 */
 public class FileObject implements Comparable<FileObject> {
 	
-	private static final Logger s_logger=LogManager.getLogger(FileObject.class);
+    private static final Logger s_logger=LogManager.getLogger(FileObject.class);
 
-	private String fileName;
-	private char concernedChar;
-	private int count;
+    private String fileName;
+    private char concernedChar; 
+    private int count;
 	
     public FileObject(String fileName, String content, char concernedChar) {
         this.fileName=fileName;
@@ -35,9 +35,9 @@ public class FileObject implements Comparable<FileObject> {
         return count;
     }
 	
-	/*
-	 * Get count of the concerned character
-	 */	
+    /*
+     * Get count of the concerned character
+     */	
     private void countConcernedChar(String content) {
         if (content!=null) {
             for (char c : content.toCharArray()) {
@@ -49,9 +49,9 @@ public class FileObject implements Comparable<FileObject> {
         s_logger.debug("File name: "+fileName+", concerned char: '"+concernedChar+"',  count: "+count);
     }
 	
-	/*
-	 * Compare 2 objects on the counts, then on the file names in case the counts are the same
-	 */
+    /*
+     * Compare 2 objects on the counts, then on the file names in case the counts are the same
+     */
     @Override
     public int compareTo(FileObject fe) {
         int diff=this.count-fe.getCount();

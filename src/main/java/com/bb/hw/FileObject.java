@@ -14,24 +14,18 @@ public class FileObject implements Comparable<FileObject> {
 	private static final Logger s_logger=LogManager.getLogger(FileObject.class);
 
 	private String fileName;
-	private String content;
 	private char concernedChar;
 	private int count;
 	
 	public FileObject(String fileName, String content, char concernedChar) {
 		this.fileName=fileName;
-		this.content=content;
 		this.concernedChar=concernedChar;
 		
-		countConcernedChar();
+		countConcernedChar(content);
 	}
 	
 	public String getFileName() {
 		return fileName;
-	}
-	
-	public String getContent() {
-		return content;
 	}
 	
 	public char getConcernChar() {
@@ -46,7 +40,7 @@ public class FileObject implements Comparable<FileObject> {
 	/*
 	 * Get count of the concerned character
 	 */	
-	private void countConcernedChar() {
+	private void countConcernedChar(String content) {
 		if (content!=null) {
 			for (char c : content.toCharArray()) {
 				if (c==concernedChar) {

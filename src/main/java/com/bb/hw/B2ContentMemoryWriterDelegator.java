@@ -17,8 +17,10 @@ public class B2ContentMemoryWriterDelegator {
 	
 	private B2ContentMemoryWriter writer;
 
-    public B2ContentMemoryWriterDelegator(){
-    	writer=B2ContentMemoryWriter.build();
+    public B2ContentMemoryWriterDelegator(boolean use){
+    	if (use) {
+    	    writer=B2ContentMemoryWriter.build();
+    	}
     }
     
     public B2ContentMemoryWriter getB2ContentMemoryWriter() {
@@ -26,6 +28,9 @@ public class B2ContentMemoryWriterDelegator {
     }
     
     public byte[] getData() {
-    	return writer.getBytes();
+    	if (writer!=null) {
+    	    return writer.getBytes();
+    	}
+    	return new byte[0];
     }    
 }

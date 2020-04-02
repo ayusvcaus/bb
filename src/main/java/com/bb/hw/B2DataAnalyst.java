@@ -79,7 +79,7 @@ public class B2DataAnalyst {
      */     
     private static void process(B2StorageClient client, Queue<FileObject> queue) throws B2Exception {
     	s_logger.info("Start to process .... ");
-    	B2ContentMemoryWriterDelegator sink=new B2ContentMemoryWriterDelegator();
+    	B2ContentMemoryWriterDelegator sink=new B2ContentMemoryWriterDelegator(true);
     	if (sink!=null) {
     	    List<B2Bucket> buckets=pullBuckets(client);
             for (B2Bucket bucket: buckets) {

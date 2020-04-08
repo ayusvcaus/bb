@@ -94,7 +94,7 @@ public class B2DataAnalyst {
     }
 
     /**
-     * All buckets convered by the applcation key are taken
+     * All buckets converted by the application key are taken
      * 
      * @param client: the consumer of B2 storage server
      * @return A list of buckets
